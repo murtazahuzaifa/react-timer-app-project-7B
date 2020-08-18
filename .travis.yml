@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - "stable"
+
+script:
+  - npm install 
+  - npm run test
+  - npm run build
+
+deploy:
+  provider: surge
+  skip_cleanup: true
+  domain: timer_app_by_murtaza.surge.sh
+  project: ./build/
+
+on:
+  branch: master
