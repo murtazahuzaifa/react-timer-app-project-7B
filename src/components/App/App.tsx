@@ -5,14 +5,15 @@ import { TimeType } from '../../Types';
 
 // let incrementTime:, handleStart, handleStart, handleStop, handleReset ;
 export let timerIsOn: boolean, setTimerIsOn: (val: boolean) => void, time:TimeType, setTime: (val:TimeType) => void, timerInterval:any, setTimerInterval: (val: any) => void;
-export let startTimer: () => void, stopTimer: () => void, resetTimer: () => void;
+// export let startTimer: () => void, stopTimer: () => void, resetTimer: () => void;
 
-const App: React.FC = () => {
-    [timerInterval, setTimerInterval] = useState<any>(0);
-    [time, setTime] = useState<TimeType>({ min: 0, sec: 0, miliSec:0 });
-    [timerIsOn, setTimerIsOn] = useState<boolean>(false);
-
-    startTimer = () => {
+export const utils = {
+    resetTimer: () => {
+        clearInterval(timerInterval);
+        setTime({ min: 0, sec: 0, miliSec:0 });
+        setTimerIsOn(false);
+    },
+    startTimer: () => {
         if (!timerIsOn) {
             setTimerIsOn(true);
             setTimerInterval(setInterval(() => {
@@ -26,39 +27,38 @@ const App: React.FC = () => {
                     time.min += 1;
                 }
                 if(time.min >59){
-                    resetTimer();
+                    utils.resetTimer();
                 }
                 setTime({...time});
             }, 10));
         }
-    }
-
-    stopTimer = () => {
+    },
+    stopTimer: () => {
         if (timerIsOn) {
             setTimerIsOn(false);
             clearInterval(timerInterval);
         }
-    }
+    }, 
+}
 
-    resetTimer = () => {
-        clearInterval(timerInterval);
-        setTime({ min: 0, sec: 0, miliSec:0 });
-        setTimerIsOn(false);
-    }
+const App: React.FC = () => {
+    [timerInterval, setTimerInterval] = useState<any>(0);
+    [time, setTime] = useState<TimeType>({ min: 0, sec: 0, miliSec:0 });
+    [timerIsOn, setTimerIsOn] = useState<boolean>(false);
 
     return (
         <div className={`${style.container}`}>
+            <h1 className={`${style.heading}`}>Timer App</h1>
             <TimeDisplayer
                 min={time.min}
                 sec={time.sec}
                 miliSec={time.miliSec}
                 timerIsOn={timerIsOn}
-                startTimer={startTimer}
-                stopTimer={stopTimer}
-                resetTimer={resetTimer}                
+                startTimer={utils.startTimer}
+                stopTimer={utils.stopTimer}
+                resetTimer={utils.resetTimer}                
             />
         </div>
     )
 }
-
 export default App;

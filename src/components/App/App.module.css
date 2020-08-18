@@ -7,3 +7,10 @@
 	align-items: center;
 }
 
+.heading{
+	font-size: 45px;
+	font-variant-caps: small-caps;
+	color: rgb(95, 50, 13);
+	text-shadow: 3px 3px 4px rgb(216, 152, 14);
+}
+
